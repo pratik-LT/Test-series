@@ -1,26 +1,53 @@
 const questions = [
   {
     question: [
-      "What does HTML stand for?", "HTML का क्या अर्थ है?"
+      "यदि (k²+3) और (k³+5) अभज्य संख्या हैं तो k का मान क्या होगा?"
     ],
-    options: ["Hyper Text Markup Language", "Home Tool Markup Language", "Hyperlinks and Text Markup Language"],
+    options: ["2", "4", "7","3"],
+    answer: 0
+  },
+  {
+    question: [
+      "संख्याओं के किस समुच्चय में प्रत्येक जोड़ी एक दूसरे के सहअभाज्य हैं?",
+    ],
+    options: ["42,55,69", "21,32,43", "35,48,55","24,35,49"],
     answer: 1
   },
   {
     question: [
-      "Which language is used for styling web pages?",
-      "वेब पेजों को स्टाइल करने के लिए किस भाषा का उपयोग किया जाता है?"
+      "गुणनफल 6812 × 3528 × 3179 ×  4324 में इकाई का अंक ज्ञात करिए?"
     ],
-    options: ["HTML", "JQuery", "CSS"],
-    answer: 1
+    options: ["3", "5", "7","6"],
+    answer: 0
+  },
+  
+  {
+    question: [
+      "127 × 137 × 413 × 291 × 342 × 533 × 342 ×  के गुणनफल के इकाई का अंक क्या होगा?"
+    ],
+    options: ["6", "8", "10","4"],
+    answer: 3
   },
   {
     question: [
-      "Which is not a JavaScript Framework?", "कौन सा जावास्क्रिप्ट फ्रेमवर्क नहीं है?"
+      "'a' का न्यूनतम मान क्या होगा जिसके लिए संख्या 638a435, 3 से पूर्णतः विभाज्य है?"
     ],
-    options: ["Python Script", "JQuery", "NodeJS"],
-    answer: 1
-  }
+    option: ["1","2", "3", "4"],
+    answer: 0
+  },
+
+  {
+    question: [
+      "यदि 483y718 अभाज्य संख्या 11 से विभाज्य है जहां y एक अंक है, तो y का मान क्या होगा?"
+    ],
+    option: ["2", "3", "4", "5"],
+    answer: 0
+  },
+  {
+    question: [
+      
+    ],
+  },
 ];
 
 let totalTime = 120;
