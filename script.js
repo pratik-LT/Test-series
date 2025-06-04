@@ -42,12 +42,7 @@ const questions = [
     ],
     option: ["2", "3", "4", "5"],
     answer: 0
-  },
-  {
-    question: [
-      
-    ],
-  },
+  }
 ];
 
 let totalTime = 120;
