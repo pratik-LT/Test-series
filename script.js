@@ -5,37 +5,27 @@ const questions = [
     answer: 0
   },
   {
-    question: [
-      "संख्याओं के किस समुच्चय में प्रत्येक जोड़ी एक दूसरे के सहअभाज्य हैं?"
-    ],
+    question: ["संख्याओं के किस समुच्चय में प्रत्येक जोड़ी एक दूसरे के सहअभाज्य हैं?"],
     options: ["42,55,69", "21,32,43", "35,48,55", "24,35,49"],
     answer: 1
   },
   {
-    question: [
-      "गुणनफल 6812 × 3528 × 3179 × 4324 में इकाई का अंक ज्ञात करिए?"
-    ],
+    question: ["गुणनफल 6812 × 3528 × 3179 × 4324 में इकाई का अंक ज्ञात करिए?"],
     options: ["3", "5", "7", "6"],
     answer: 0
   },
   {
-    question: [
-      "127 × 137 × 413 × 291 × 342 × 533 × 342 × के गुणनफल के इकाई का अंक क्या होगा?"
-    ],
+    question: ["127 × 137 × 413 × 291 × 342 × 533 × 342 × के गुणनफल के इकाई का अंक क्या होगा?"],
     options: ["6", "8", "10", "4"],
     answer: 3
   },
   {
-    question: [
-      "'a' का न्यूनतम मान क्या होगा जिसके लिए संख्या 638a435, 3 से पूर्णतः विभाज्य है?"
-    ],
+    question: ["'a' का न्यूनतम मान क्या होगा जिसके लिए संख्या 638a435, 3 से पूर्णतः विभाज्य है?"],
     options: ["1", "2", "3", "4"],
     answer: 0
   },
   {
-    question: [
-      "यदि 483y718 अभाज्य संख्या 11 से विभाज्य है जहां y एक अंक है, तो y का मान क्या होगा?"
-    ],
+    question: ["यदि 483y718 अभाज्य संख्या 11 से विभाज्य है जहां y एक अंक है, तो y का मान क्या होगा?"],
     options: ["2", "3", "4", "5"],
     answer: 0
   }
@@ -84,11 +74,9 @@ function startTimer() {
 
 function showQuestion(index) {
   const q = questions[index];
-  questionEl.innerHTML = `
-    <ul style="list-style: none; padding-left: 0;">
+  questionEl.innerHTML = `<ul style="list-style: none; padding-left: 0;">
       <li style="margin-bottom: 5px;">${q.question[0]}</li>
-    </ul>
-  `;
+    </ul>`;
   optionsEl.innerHTML = "";
 
   q.options.forEach((option, i) => {
@@ -97,12 +85,22 @@ function showQuestion(index) {
     input.type = "radio";
     input.name = "option";
     input.value = i;
+
+    // Toggle radio button on second click
+    input.addEventListener("mousedown", function () {
+      this.wasChecked = this.checked;
+    });
+    input.addEventListener("click", function () {
+      if (this.wasChecked) {
+        this.checked = false;
+      }
+    });
+
     li.appendChild(input);
     li.appendChild(document.createTextNode(" " + option));
     optionsEl.appendChild(li);
   });
 
-  // Disable previous button if at the first question
   previousBtn.disabled = index === 0;
 }
 
@@ -124,9 +122,7 @@ function showFinalResult() {
 
 nextBtn.addEventListener("click", () => {
   const selected = document.querySelector('input[name="option"]:checked');
-  if (!selected) return;
-
-  if (parseInt(selected.value) === questions[currentQuestion].answer) {
+  if (selected && parseInt(selected.value) === questions[currentQuestion].answer) {
     score++;
   }
 
@@ -153,7 +149,6 @@ userForm.addEventListener("submit", (e) => {
   const lastName = lastNameInput.value.trim();
   const mobile = mobileInput.value.trim();
   const date = dateInput.value;
-
   const mobileRegex = /^[0-9]{10}$/;
 
   if (!name || !lastName || !mobile || !date) {
