@@ -35,6 +35,7 @@ let totalTime = 120;
 let currentQuestion = 0;
 let score = 0;
 let timerInterval;
+const userAnswers = [];
 
 const startBtn = document.getElementById("start-btn");
 const timeEl = document.getElementById("time");
@@ -45,13 +46,10 @@ const previousBtn = document.getElementById("prev-btn");
 const resultEl = document.getElementById("result");
 const quizContainer = document.getElementById("quiz-container");
 const timer = document.getElementById("timer");
-
 const placeholderQuiz = document.getElementById("footer-placeholder-quiz");
 const placeholderResult = document.getElementById("footer-placeholder-result");
 const scoreDisplay = document.getElementById("score");
-
 const footer = document.getElementById("footer");
-
 const userForm = document.getElementById("user-form");
 const nameInput = document.getElementById("name");
 const lastNameInput = document.getElementById("last-name");
@@ -64,7 +62,6 @@ function startTimer() {
     let seconds = totalTime % 60;
     timeEl.textContent = `${minutes}:${seconds.toString().padStart(2, "0")}`;
     totalTime--;
-
     if (totalTime < 0) {
       clearInterval(timerInterval);
       finishTest();
@@ -74,19 +71,21 @@ function startTimer() {
 
 function showQuestion(index) {
   const q = questions[index];
-  questionEl.innerHTML = `<ul style="list-style: none; padding-left: 0;">
-      <li style="margin-bottom: 5px;">${q.question[0]}</li>
-    </ul>`;
+  questionEl.innerHTML = `<strong>प्रश्न ${index + 1}:</strong> ${q.question[0]}`;
   optionsEl.innerHTML = "";
+
+  const optionLabels = ["A", "B", "C", "D"];
 
   q.options.forEach((option, i) => {
     const li = document.createElement("li");
+    li.style.marginBottom = "8px";
+
     const input = document.createElement("input");
     input.type = "radio";
     input.name = "option";
     input.value = i;
 
-    // Toggle radio button on second click
+    // Toggle functionality
     input.addEventListener("mousedown", function () {
       this.wasChecked = this.checked;
     });
@@ -97,9 +96,18 @@ function showQuestion(index) {
     });
 
     li.appendChild(input);
-    li.appendChild(document.createTextNode(" " + option));
+    li.appendChild(document.createTextNode(` ${optionLabels[i]}. ${option}`));
     optionsEl.appendChild(li);
   });
+
+  // Restore previously selected answer
+  const prevAnswer = userAnswers[index];
+  if (typeof prevAnswer !== "undefined") {
+    const inputs = document.getElementsByName("option");
+    if (inputs[prevAnswer]) {
+      inputs[prevAnswer].checked = true;
+    }
+  }
 
   previousBtn.disabled = index === 0;
 }
@@ -108,35 +116,47 @@ function finishTest() {
   quizContainer.classList.add("hidden");
   timer.classList.add("hidden");
   resultEl.classList.remove("hidden");
-  scoreDisplay.textContent = `Time's up! You scored ${score} out of ${questions.length}`;
+
+  const percentage = ((score / questions.length) * 100).toFixed(2);
+  scoreDisplay.innerHTML = `
+    <p>📝 आपने ${questions.length} में से ${score} सही उत्तर दिए।</p>
+    <p>🎯 स्कोर: ${percentage}%</p>
+  `;
+
   placeholderResult.appendChild(footer);
 }
 
 function showFinalResult() {
-  quizContainer.classList.add("hidden");
-  timer.classList.add("hidden");
-  resultEl.classList.remove("hidden");
-  scoreDisplay.textContent = `You scored ${score} out of ${questions.length}`;
-  placeholderResult.appendChild(footer);
+  clearInterval(timerInterval);
+  finishTest();
 }
 
 nextBtn.addEventListener("click", () => {
   const selected = document.querySelector('input[name="option"]:checked');
-  if (selected && parseInt(selected.value) === questions[currentQuestion].answer) {
+  const selectedValue = selected ? parseInt(selected.value) : undefined;
+
+  // Save user's selection
+  userAnswers[currentQuestion] = selectedValue;
+
+  if (selectedValue === questions[currentQuestion].answer) {
     score++;
   }
 
   currentQuestion++;
+
   if (currentQuestion < questions.length) {
     showQuestion(currentQuestion);
   } else {
-    clearInterval(timerInterval);
     showFinalResult();
   }
 });
 
 previousBtn.addEventListener("click", () => {
   if (currentQuestion > 0) {
+    // Reduce score if previous answer was correct
+    if (userAnswers[currentQuestion - 1] === questions[currentQuestion - 1].answer) {
+      score--;
+    }
     currentQuestion--;
     showQuestion(currentQuestion);
   }
