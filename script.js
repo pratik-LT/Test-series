@@ -1,46 +1,42 @@
 const questions = [
   {
-    question: [
-      "यदि (k²+3) और (k³+5) अभज्य संख्या हैं तो k का मान क्या होगा?"
-    ],
-    options: ["2", "4", "7","3"],
+    question: ["यदि (k²+3) और (k³+5) अभज्य संख्या हैं तो k का मान क्या होगा?"],
+    options: ["2", "4", "7", "3"],
     answer: 0
   },
   {
     question: [
-      "संख्याओं के किस समुच्चय में प्रत्येक जोड़ी एक दूसरे के सहअभाज्य हैं?",
+      "संख्याओं के किस समुच्चय में प्रत्येक जोड़ी एक दूसरे के सहअभाज्य हैं?"
     ],
-    options: ["42,55,69", "21,32,43", "35,48,55","24,35,49"],
+    options: ["42,55,69", "21,32,43", "35,48,55", "24,35,49"],
     answer: 1
   },
   {
     question: [
-      "गुणनफल 6812 × 3528 × 3179 ×  4324 में इकाई का अंक ज्ञात करिए?"
+      "गुणनफल 6812 × 3528 × 3179 × 4324 में इकाई का अंक ज्ञात करिए?"
     ],
-    options: ["3", "5", "7","6"],
+    options: ["3", "5", "7", "6"],
     answer: 0
   },
-  
   {
     question: [
-      "127 × 137 × 413 × 291 × 342 × 533 × 342 ×  के गुणनफल के इकाई का अंक क्या होगा?"
+      "127 × 137 × 413 × 291 × 342 × 533 × 342 × के गुणनफल के इकाई का अंक क्या होगा?"
     ],
-    options: ["6", "8", "10","4"],
+    options: ["6", "8", "10", "4"],
     answer: 3
   },
   {
     question: [
       "'a' का न्यूनतम मान क्या होगा जिसके लिए संख्या 638a435, 3 से पूर्णतः विभाज्य है?"
     ],
-    option: ["1","2", "3", "4"],
+    options: ["1", "2", "3", "4"],
     answer: 0
   },
-
   {
     question: [
       "यदि 483y718 अभाज्य संख्या 11 से विभाज्य है जहां y एक अंक है, तो y का मान क्या होगा?"
     ],
-    option: ["2", "3", "4", "5"],
+    options: ["2", "3", "4", "5"],
     answer: 0
   }
 ];
@@ -55,14 +51,16 @@ const timeEl = document.getElementById("time");
 const questionEl = document.getElementById("question");
 const optionsEl = document.getElementById("options");
 const nextBtn = document.getElementById("next-btn");
+const previousBtn = document.getElementById("prev-btn");
 const resultEl = document.getElementById("result");
 const quizContainer = document.getElementById("quiz-container");
 const timer = document.getElementById("timer");
-const footer = document.getElementById("footer");
 
 const placeholderQuiz = document.getElementById("footer-placeholder-quiz");
 const placeholderResult = document.getElementById("footer-placeholder-result");
 const scoreDisplay = document.getElementById("score");
+
+const footer = document.getElementById("footer");
 
 const userForm = document.getElementById("user-form");
 const nameInput = document.getElementById("name");
@@ -89,7 +87,6 @@ function showQuestion(index) {
   questionEl.innerHTML = `
     <ul style="list-style: none; padding-left: 0;">
       <li style="margin-bottom: 5px;">${q.question[0]}</li>
-      <li style="color: gray;">${q.question[1]}</li>
     </ul>
   `;
   optionsEl.innerHTML = "";
@@ -104,6 +101,9 @@ function showQuestion(index) {
     li.appendChild(document.createTextNode(" " + option));
     optionsEl.appendChild(li);
   });
+
+  // Disable previous button if at the first question
+  previousBtn.disabled = index === 0;
 }
 
 function finishTest() {
@@ -136,6 +136,13 @@ nextBtn.addEventListener("click", () => {
   } else {
     clearInterval(timerInterval);
     showFinalResult();
+  }
+});
+
+previousBtn.addEventListener("click", () => {
+  if (currentQuestion > 0) {
+    currentQuestion--;
+    showQuestion(currentQuestion);
   }
 });
 
